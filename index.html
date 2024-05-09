@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.0/papaparse.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="style.css">
+
+</head>
+
+<body> 
+    <!-- THIS SECTION IS YOUR COVER PAGE -->
+    <section style="background-image: url();">
+        <div class="parent" >
+            <h1 style="font-size: 10.33em; padding-top: 2%; padding-left: 2%;">Interactive Media Research Journal, 2024</h1>
+            <div class="">
+                
+            <div class="caption">
+        
+                <a class="caption_url" href="https://isoebell.github.io/ResearchJournal/index.html">https://isoebell.github.io/ResearchJournal/index.html</a></div>
+            </div>
+            </div>
+        <div class="right" style="background: none;color:black">
+            <div background-color: white;>
+                <div class="filler">
+
+                </div>
+            <h2 style="background-color: greenyellow;">Isobelle R McCall # 1080758 | GDES30008 Class 03</h2>
+            <p class="list">
+                ★ Ania Klosek
+                <br>
+                ★ Intranet Girl
+                <br>
+                ★ Marina Lussi
+                <br>
+                ★ Martin Parr
+                <br>
+                ★ Naoki Tsutae
+                <br>
+                ★ Rafael Lozano-Hemmer
+                <br>
+                ★ Schemas of Uncertainty
+                <br>
+                ★ Spazio Lampo
+                <br>
+                ★ Sun Yuan and Peng Yu
+                <br>
+                ★ Zach Lieberman
+            </p>
+        </div>
+        </div>
+    </section>
+    <script>
+        /* THIS SCRIPT IS LOADED VIA CDN AND ESSENTIALLY READS THE .csv FILE ROW BY ROW 
+        TO GET THE VARIOUS `COMPONENTS` OF YOUR `JOURNAL` ONE `ENTRY` PER SECTION */
+        $(document).ready(function () {
+            Papa.parse('ResearchJournal.csv', {
+                download: true,
+                header: true,
+                complete: function (results) {
+                    results.data.forEach(function (row) {
+                        var section = $('<section>');
+                        var parentDiv = $('<div>').addClass('parent');
+                        var leftDiv = $('<div>').addClass(row['Class']);
+                        var topdiv = $('<div>').addClass('topdiv').css('background-image', 'url(' + row['ImageSrc'] + ')');
+                        var bottomdiv = $('<div>').addClass('bottomdiv').css('background-image', 'url(' + row['ImageSrc2'] + ')');
+                        var rightDiv = $('<div>').addClass('right');
+                        
+                        var h1 = $('<h1>').text(row['Title']);
+                        var h2 = $('<h2>').text(row['Description']);
+                        var p = $('<p>').text(row['BodyText']);
+                        var a = $('<a>').attr('href', '#').text(row['Link']);
+                        //var figure = $('<figure>');
+                        var img = $('<img>').attr('src', row['ImageSrc']);
+                        var img2 = $('<img>').attr('src', row['ImageSrc2']);
+                        //var figcaption = $('<figcaption>').text(row['Caption'].'\n'.$row['Caption2']);
+                        //figure.append(img, figcaption);
+                        if (row['Class'] == 'leftDoubleImage') {
+                            leftDiv.append(topdiv, bottomdiv);
+                            var captionText = 'Above: '+ row['Caption'] + ' | Below: ' + row['Caption2'];
+                            var captionDiv = $('<div>').addClass('caption').text(captionText);
+                        } else {
+                            leftDiv.css('background-image', 'url(' + row['ImageSrc'] + ')');
+                            leftDiv.css('background-size', 'cover');
+                            var captionDiv = $('<div>').addClass('caption').text(row['Caption']);
+                        }
+                        parentDiv.append(leftDiv, captionDiv);
+                        rightDiv.append(h1);
+                        var keyWords = row['Keywords'].split(', ');
+                        var span = '<p style="width:100%; line-height:2em;">';
+                        keyWords.forEach((keyword) => {
+                           // span+='#' + keyword + '&nbsp;';
+                        });
+                        span+='</p>';
+                        rightDiv.append(h2, p, a, span);
+                        section.append(parentDiv, rightDiv);
+                        $('body').append(section);
+                    });
+                }
+            });
+        });
+    </script>
+     <!-- YOU CAN `UNCOMMENT` THIS SECTION AND EDIT IT TO TEST ANY STRUCTURAL OR STYLE CHANGES YOU MIGHT WANT TO MAKE
+        YOU COULD ALSO COPY A NUMBER OF THESE SECTIONS IF YOU PREFER TO WORK WITH A STATIC TEMPLATE, JUST CHANGE TH EIMAGES AND TEXTS MANUALLY. -->
+    <!-- 
+    <section>
+        <div class="parent">
+            <div class="left"></div>
+            <div class="caption">Your caption goes here, with <span class="caption_title">A Title, </span>Author, &
+                <span class="caption_url">url</span></div>
+        </div>
+        <div class="right">
+            <h1>Header</h1>
+            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed euismod, nunc at bibendum dapibus, risus
+                ante dapibus est, a feugiat turpis elit id eros.</p>
+            <a href="#">Read more</a>
+        </div>
+    </section> -->
+</body>
+
+</html>
